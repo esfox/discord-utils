@@ -6,10 +6,7 @@
     "ping": false,
     "mode": false
   },
-  "prefixes": [
-    ";",
-    "="
-  ],
+  "prefixes": [ ";" ],
   "embed_color": "#36393f",
   "error_message": "❌  Woops! A problem occurred."
 }
