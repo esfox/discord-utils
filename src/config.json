@@ -1,0 +1,15 @@
+{
+  "developer": {
+    "id": "247955535620472844",
+    "channel": "523003473696915457",
+    "logs": "523003473696915457",
+    "ping": false,
+    "mode": false
+  },
+  "prefixes": [
+    ";",
+    "="
+  ],
+  "embed_color": "#36393f",
+  "error_message": "❌  Woops! A problem occurred."
+}

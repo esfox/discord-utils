@@ -1,0 +1,9 @@
+{
+  "name": "discord-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "node-fetch": "^2.5.0"
+  }
+}
