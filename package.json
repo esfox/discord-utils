@@ -5,6 +5,9 @@
   "bin": {
     "discord-utils": "src/cli.js"
   },
+  "keywords": [
+    "discord-utils"
+  ],
   "dependencies": {
     "discord.js": "^11.4.2",
     "node-fetch": "^2.5.0"
