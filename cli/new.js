@@ -67,9 +67,8 @@ module.exports = (type, name, directory) =>
       fs.mkdirSync(p);
   });
     
-  dir = `${dir}${path.sep}${name}.js`;
+  dir = `${dir}${path.sep}${isModule && !directory? 'index' : name}.js`;
 
-  /** @type {string} */
   let template = templates[type];
   if(isModule)
   {

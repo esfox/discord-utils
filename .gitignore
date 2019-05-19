@@ -61,4 +61,5 @@ typings/
 /test
 /others
 /src_dev
+/cli-test
 .vscode
