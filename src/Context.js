@@ -93,6 +93,15 @@ module.exports = class Context extends Sender
 		this.modules = util.addItemsFromPath(Module, path);
 	}
 
+	/** @param {Object} config */
+	setConfig(config)
+	{
+		if(typeof config !== 'object')
+			throw new Error('Please pass an object for the config.');
+
+		this.config = config;
+	}
+
 	/**
 	 * @param {any} database 
 	 * @param {string} [propertyName]
@@ -105,7 +114,7 @@ module.exports = class Context extends Sender
 
 	saveConfig()
 	{
-		save(`${__dirname}/config.json`, JSON.stringify(config, null, 2))
+		save(`${__dirname}/config.json`, JSON.stringify(this.config, null, 2))
 			.then(_ => Promise.resolve(true))
 			.catch(this.error);
 	}
