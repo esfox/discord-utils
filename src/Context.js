@@ -46,7 +46,7 @@ module.exports = class Context extends Sender
 		this.guild = message.guild;
 
 		let chat = message.content;
-		const prefix = config.prefixes.find(prefix => chat.startsWith(prefix));
+		const prefix = this.config.prefixes.find(p => chat.startsWith(p));
 		if(!prefix)
 			return;
 

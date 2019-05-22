@@ -1,8 +1,13 @@
 const Discord = require('discord.js');
-const config = require('./config.json');
+const defaultConfig = require('./config.json');
 
 module.exports = class Sender
 {
+	get getConfig()
+	{
+		return this.config || defaultConfig;
+	}
+
 	/**
 	 * @param {string} title 
 	 * @param {string} [description]
@@ -46,7 +51,7 @@ module.exports = class Sender
 		if(context || context.bot)
 		{
 			/** @type {import('discord.js').User} */
-			const developer = context.bot.users.get(config.developer.id);
+			const developer = context.bot.users.get(this.getConfig.developer.id);
 			developer.send(this.embed('❌  An error occurred.')
 				.setColor('#dd2e44')
 				.addField('Command', context.command)
@@ -56,10 +61,10 @@ module.exports = class Sender
 		}
 
 		if(context.message.channel.type === 'dm' &&
-			context.message.author.id === config.developer.id)
+			context.message.author.id === this.getConfig.developer.id)
 			return;
 
-		return this.send(config.error_message);
+		return this.send(this.getConfig.error_message);
 	}
 
 	/**
@@ -70,7 +75,7 @@ module.exports = class Sender
 	embed(title, description)
 	{
 		const embed = new Discord.RichEmbed()
-			.setColor(config ? config.embed_color : '#36393f');
+			.setColor(defaultConfig ? this.getConfig.embed_color : '#36393f');
 
 		if(title) embed.setTitle(title);
 		if(description) embed.setDescription(description);
