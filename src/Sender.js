@@ -34,6 +34,8 @@ module.exports = class Sender
 	 */
 	chat(content, toReply, options)
 	{
+		this.message.channel.stopTyping(true);
+		
 		if(toReply)
 			return this.message.reply(content, options);
 
