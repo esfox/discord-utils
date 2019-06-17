@@ -29,7 +29,7 @@ exports.addItemsFromPath = (type, path) =>
 	const getPath = file => `${path}/${file}`;
 	const getExports = file => require(getPath(file));
 
-  return fs.readdirSync(path.startsWith('/')? path.substr(1) : path)
+  return fs.readdirSync(path)
   .reduce((items, file) =>
   {
 		if(type.name !== 'Module')
