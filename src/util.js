@@ -34,7 +34,7 @@ exports.addItemsFromPath = (type, path) =>
   {
 		if(type.name !== 'Module')
 			return file.indexOf('.') !== 0 && 
-				file.slice(-3) === '.js' || file.slice(-3) === '.ts'?
+				(file.slice(-3) === '.js' || file.slice(-3) === '.ts')?
 				items.concat(new (getExports(file))()) : items;
 
 		try
