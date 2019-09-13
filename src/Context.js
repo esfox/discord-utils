@@ -6,23 +6,36 @@ const Module = require('./Module');
 const util = require('./util');
 
 /** @typedef {import('./Module')[]} Modules */
+let botIsStarted = false;
 
 module.exports = class Context extends Sender
 {
 	/** @param {import('discord.js').Client} bot */
 	constructor(bot)
 	{
+		super();
+
+		if(botIsStarted)
+			return;
+
 		if(!bot)
 			throw new Error('Please pass the client as a parameter.');
-
-		super();
 
 		/** @type {Modules} */
 		this.modules = [];
 		this.config = config;
 
+		/** @type {import('discord.js').Message} */
+		this.message = undefined;
+		this.bot = undefined;
+		this.guild = undefined;
+		this.parameters = undefined;
+		this.raw_parameters = undefined;
+
 		bot.on('ready', _ =>
 		{
+			botIsStarted = true;
+
 			/** @type {string[]} */
 			const keywords = this.modules.reduce((commands, _module) => commands
 				.concat(_module.commands), [])
@@ -41,10 +54,6 @@ module.exports = class Context extends Sender
 	/** @param {import('discord.js').Message} message */
 	from(message)
 	{
-		this.message = message;
-		this.bot = message.client;
-		this.guild = message.guild;
-
 		let chat = message.content;
 		const prefix = this.config.prefixes.find(p => chat.startsWith(p));
 		if(!prefix)
@@ -57,9 +66,6 @@ module.exports = class Context extends Sender
 			.split(' ');
 
 		keyword = keyword.toLowerCase();
-		this.parameters = parameters.length > 0? parameters : undefined;
-		this.raw_parameters = chat.indexOf(' ') >= 0?
-			chat.substr(chat.indexOf(' ') + 1) : undefined;
 
 		for(let _module of this.modules)
 		{
@@ -73,11 +79,21 @@ module.exports = class Context extends Sender
 
 				return;
 			});
+
 			if(!command)
 				continue;
 
-			this.command = command.keyword;
-			_module.handle(this);
+			const context = new Context();
+			context.command = command.keyword;
+			context.config = this.config;
+			context.message = message;
+			context.bot = message.client;
+			context.guild = message.guild;
+			context.parameters = parameters.length > 0? parameters : undefined;
+			context.raw_parameters = chat.indexOf(' ') >= 0?
+				chat.substr(chat.indexOf(' ') + 1) : undefined;
+
+			_module.handle(context);
 		}
 	}
 
@@ -100,16 +116,6 @@ module.exports = class Context extends Sender
 			throw new Error('Please pass an object for the config.');
 
 		this.config = config;
-	}
-
-	/**
-	 * @param {any} database 
-	 * @param {string} [propertyName]
-	 */
-	setDatabase(database, propertyName)
-	{
-		/** @type {Object} */
-		this[propertyName? propertyName : 'database'] = database;
 	}
 
 	saveConfig()
