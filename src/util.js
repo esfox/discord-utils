@@ -40,9 +40,9 @@ exports.addItemsFromPath = (type, path) =>
 		try
 		{
 			const dir = fs.readdirSync(getPath(file));
-			let main = dir.find(f => f === 'index.js');
+			let main = dir.find(f => f === 'index.js' || f === 'index.ts');
 			if(!main)
-				main = dir.find(f => f === `${file}.js`);
+				main = dir.find(f => f === `${file}.js` || f === `${file}.ts`);
 
 			if(!main)
 				return items;
@@ -51,7 +51,8 @@ exports.addItemsFromPath = (type, path) =>
 		}
 		catch(error)
 		{
-			file = file.slice(-3) === '.js'? getExports(file) : undefined;
+			file = file.slice(-3) === '.js' || file.slice(-3) === '.ts'?
+				getExports(file) : undefined;
 		}
 
 		if(!file || !file.name)
