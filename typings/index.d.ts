@@ -1,6 +1,13 @@
 declare module 'discord-utils'
 {
-  import { Client, Message, Guild } from 'discord.js';
+  import
+  {
+    Client,
+    Message,
+    Guild,
+    RichEmbed,
+    MessageOptions
+  } from 'discord.js';
 
   class Command
   {
@@ -27,7 +34,22 @@ declare module 'discord-utils'
     public setCommandsPath(path: string): void;
   }
 
-  class Context
+  class Sender
+  {
+    public send(title: string, description?: string): 
+      Promise<Message | Message[]>;
+    public reply(title: string, description?: string): 
+      Promise<Message | Message[]>;
+    public chat(
+      title: string | RichEmbed,
+      toReply: boolean,
+      options: MessageOptions,
+    ): Promise<Message | Message[]>;
+    public embed(title?: string, description?: string): RichEmbed;
+    public error(error: Error | any): Promise<Message | Message[]>;
+  }
+
+  class Context extends Sender
   {
     constructor(bot: Client)
     public modules: Module[];
