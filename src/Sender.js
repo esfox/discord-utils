@@ -42,15 +42,12 @@ module.exports = class Sender
 		return this.message.channel.send(content, options);
 	}
 
-	/**
-	 * @param {any | Error} error 
-	 * @param {import('./Context')} [context]
-	 */
-	error(error, context)
+	/** @param {any | Error} error */
+	error(error)
 	{
 		console.error(error);
 
-		if(context || context.bot)
+		if(this.bot)
 		{
 			/** @type {import('discord.js').User} */
 			const developer = context.bot.users.get(this.getConfig.developer.id);
@@ -62,15 +59,15 @@ module.exports = class Sender
 				.catch(console.error);
 		}
 
-		if(context.message.channel.type === 'dm' &&
-			context.message.author.id === this.getConfig.developer.id)
+		if(this.message && (this.message.channel.type === 'dm' &&
+			this.message.author.id === this.getConfig.developer.id))
 			return;
 
 		return this.send(this.getConfig.error_message);
 	}
 
 	/**
-	 * @param {string} title 
+	 * @param {string} [title]
 	 * @param {string} [description] 
 	 * @return {import('discord.js').RichEmbed}
 	 */
