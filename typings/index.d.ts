@@ -38,6 +38,7 @@ declare module 'discord-utils'
     public parameters: string[];
     public raw_parameters: string;
 
+    public from(message: Message);
     public addModules(modules: Module[]): void;
     public setModulesPath(path: string): void;
     public setConfig(config: object): void;
