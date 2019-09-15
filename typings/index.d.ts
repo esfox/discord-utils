@@ -29,6 +29,7 @@ declare module 'discord-utils'
 
   class Context
   {
+    constructor(bot: Client)
     public modules: Module[];
     public config: object;
     public message: Message;
