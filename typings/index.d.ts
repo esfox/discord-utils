@@ -41,9 +41,9 @@ declare module 'discord-utils'
     public reply(title: string, description?: string): 
       Promise<Message | Message[]>;
     public chat(
-      title: string | RichEmbed,
-      toReply: boolean,
-      options: MessageOptions,
+      content: string | RichEmbed,
+      toReply?: boolean,
+      options?: MessageOptions,
     ): Promise<Message | Message[]>;
     public embed(title?: string, description?: string): RichEmbed;
     public error(error: Error | any): Promise<Message | Message[]>;
