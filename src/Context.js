@@ -85,6 +85,7 @@ module.exports = class Context extends Sender
 
 			const context = new Context();
 			context.command = command.keyword;
+			context.modules = this.modules;
 			context.config = this.config;
 			context.message = message;
 			context.bot = message.client;
