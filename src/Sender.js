@@ -59,8 +59,13 @@ module.exports = class Sender
 				.catch(console.error);
 		}
 
-		if(this.message && (this.message.channel.type === 'dm' &&
-			this.message.author.id === this.getConfig.developer.id))
+		const developer = this.getConfig.developer.id;
+		const sender = context.message.author.id;
+		const isDeveloper = Array.isArray(developer)
+			? developer.includes(sender)
+			: developer === sender;
+
+		if(this.message && (this.message.channel.type === 'dm' && isDeveloper))
 			return;
 
 		return this.send(this.getConfig.error_message);
@@ -73,7 +78,7 @@ module.exports = class Sender
 	 */
 	embed(title, description)
 	{
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setColor(defaultConfig ? this.getConfig.embed_color : '#36393f');
 
 		if(title) embed.setTitle(title);

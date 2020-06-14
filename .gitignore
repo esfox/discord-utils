@@ -55,7 +55,4 @@ jspm_packages/
 .cache
 
 # Unnecessary Folders
-/test
-/others
-/src_dev
 .vscode

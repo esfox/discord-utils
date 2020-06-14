@@ -93,7 +93,7 @@ module.exports = class Module
 		if(!context.config.developer.mode)
 			return;
 
-		if(context.message.author.id !== context.config.developer.id)
+		if(isDeveloper(context))
 		{
 			context.send('🛠  Bot is in developent mode.');
 			return true;
@@ -107,7 +107,7 @@ module.exports = class Module
 		if
 		(
 			this.rules.developer && 
-			context.message.author.id !== context.config.developer.id
+			!isDeveloper(context)
 		)
 		{
 			context.reply(this.responses.developerOnly);
@@ -179,5 +179,15 @@ module.exports = class Module
 			return true;
 		}
 		return;
+	}
+
+	/** @param {Context} context */
+	isDeveloper(context)
+	{
+		const developer = context.config.developer.id;
+		const sender = context.message.author.id;
+		return Array.isArray(developer)
+			? developer.includes(sender)
+			: developer === sender
 	}
 }
