@@ -5,7 +5,7 @@ declare module 'discord-utils'
     Client,
     Message,
     Guild,
-    RichEmbed,
+    MessageEmbed,
     MessageOptions
   } from 'discord.js';
 
@@ -41,11 +41,11 @@ declare module 'discord-utils'
     public reply(title: string, description?: string): 
       Promise<Message | Message[]>;
     public chat(
-      content: string | RichEmbed,
+      content: string | MessageEmbed,
       toReply?: boolean,
       options?: MessageOptions,
     ): Promise<Message | Message[]>;
-    public embed(title?: string, description?: string): RichEmbed;
+    public embed(title?: string, description?: string): MessageEmbed;
     public error(error: Error | any): Promise<Message | Message[]>;
   }
 
