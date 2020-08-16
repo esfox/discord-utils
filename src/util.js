@@ -44,16 +44,12 @@ exports.addItemsFromPath = (type, path) =>
 		
 				try
 				{
-					console.log(`Reading directory ${file}...`);
 					const dir = fs.readdirSync(getPath(file));
-					console.log(`Contents of directory ${file}: ${dir.join(',')}`);
 						
 					let main = dir.find(f => f === 'index.js' || f === 'index.ts');
 					if(!main)
 						main = dir.find(f => f === `${file}.js` || f === `${file}.ts`);
 		
-					console.log(`No index script found for directory '${file}'.`);
-
 					if(!main)
 						return items;
 					
@@ -66,8 +62,8 @@ exports.addItemsFromPath = (type, path) =>
 					file = file.slice(-3) === '.js' || file.slice(-3) === '.ts'?
 						getExports(file) : undefined;
 				}
-		
-				if(!file || !file.name)
+
+				if(!file)
 					return items;
 		
 				file = new file();

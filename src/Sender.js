@@ -39,7 +39,10 @@ module.exports = class Sender
 		if(toReply)
 			return this.message.reply(content, options);
 
-		return this.message.channel.send(content, options);
+		if(content instanceof Discord.MessageEmbed)
+			return this.message.channel.send({ embed: content });
+
+		return this.message.channel.send(content);
 	}
 
 	/** @param {any | Error} error */
