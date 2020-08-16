@@ -31,10 +31,8 @@ exports.addItemsFromPath = (type, path) =>
 
 	try
 	{
-		const modulesPath = fs.readdirSync(path);
-		console.log(`Loading modules in ${modulesPath}...`);
-		
-		return modulesPath
+		console.log(`Loading modules in ${path}...`);
+		return fs.readdirSync(path)
 			.reduce((items, file) =>
 			{
 				if(type.name !== 'Module')
@@ -46,11 +44,16 @@ exports.addItemsFromPath = (type, path) =>
 		
 				try
 				{
+					console.log(`Reading directory ${file}...`);
 					const dir = fs.readdirSync(getPath(file));
+					console.log(`Contents of directory ${file}: ${dir.join(',')}`);
+						
 					let main = dir.find(f => f === 'index.js' || f === 'index.ts');
 					if(!main)
 						main = dir.find(f => f === `${file}.js` || f === `${file}.ts`);
 		
+					console.log(`No index script found for directory '${file}'.`);
+
 					if(!main)
 						return items;
 					
