@@ -29,39 +29,53 @@ exports.addItemsFromPath = (type, path) =>
 	const getPath = file => `${path}/${file}`;
 	const getExports = file => require(getPath(file));
 
-  return fs.readdirSync(path)
-  .reduce((items, file) =>
-  {
-		if(type.name !== 'Module')
-			return file.indexOf('.') !== 0 && 
-				(file.slice(-3) === '.js' || file.slice(-3) === '.ts')?
-				items.concat(new (getExports(file))()) : items;
+	try
+	{
+		const modulesPath = fs.readdirSync(path);
+		console.log(`Loading modules in ${modulesPath}...`);
+		
+		return modulesPath
+			.reduce((items, file) =>
+			{
+				if(type.name !== 'Module')
+					return file.indexOf('.') !== 0 && 
+						(file.slice(-3) === '.js' || file.slice(-3) === '.ts')?
+						items.concat(new (getExports(file))()) : items;
 
-		try
-		{
-			const dir = fs.readdirSync(getPath(file));
-			let main = dir.find(f => f === 'index.js' || f === 'index.ts');
-			if(!main)
-				main = dir.find(f => f === `${file}.js` || f === `${file}.ts`);
-
-			if(!main)
+				console.log(`Loading module '${file}'...`);
+		
+				try
+				{
+					const dir = fs.readdirSync(getPath(file));
+					let main = dir.find(f => f === 'index.js' || f === 'index.ts');
+					if(!main)
+						main = dir.find(f => f === `${file}.js` || f === `${file}.ts`);
+		
+					if(!main)
+						return items;
+					
+					file = getExports(`${file}/${main}`);
+				}
+				catch(error)
+				{
+					console.log(`Error loading module '${file}'.`);
+					console.log(error);
+					file = file.slice(-3) === '.js' || file.slice(-3) === '.ts'?
+						getExports(file) : undefined;
+				}
+		
+				if(!file || !file.name)
+					return items;
+		
+				file = new file();
+				if(file instanceof type)
+					return items.concat(file);
+		
 				return items;
-			
-			file = getExports(`${file}/${main}`);
-		}
-		catch(error)
-		{
-			file = file.slice(-3) === '.js' || file.slice(-3) === '.ts'?
-				getExports(file) : undefined;
-		}
-
-		if(!file || !file.name)
-			return items;
-
-		file = new file();
-		if(file instanceof type)
-			return items.concat(file);
-
-    return items;
-  }, []);
+			}, []);
+	}
+	catch(error)
+	{
+		console.error(error);
+	}
 }
